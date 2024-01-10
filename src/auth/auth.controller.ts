@@ -1,13 +1,17 @@
-import { Body, Controller, Post, Get, Session } from '@nestjs/common';
+import { Body, Controller, Post, Get, Session, UseInterceptors } from '@nestjs/common';
 import { LoginUserDto } from './dtos/login.dto';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 import { Serialize } from 'src/interceptors/Serialize.interceptor';
 import { UserDto } from 'src/users/dtos/user.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { User } from '../users/user.entity'
 
 @Controller('auth')
 @Serialize(UserDto)
+@UseInterceptors(CurrentUserInterceptor)
 export class AuthController {
     constructor(private authService: AuthService, private usersService: UsersService) {}
     @Post('/register')
@@ -31,8 +35,7 @@ export class AuthController {
     }
 
     @Get('/whoami') 
-    async whoami(@Session() session: any) {
-        const user = await this.usersService.findOneBy(session.userId);
+    async whoami(@CurrentUser() user: User) {
         return user;
     }
 
