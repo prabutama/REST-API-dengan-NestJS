@@ -2,9 +2,9 @@ import { Body, Controller, Post, Get, Session, UseInterceptors } from '@nestjs/c
 import { LoginUserDto } from './dtos/login.dto';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { AuthService } from './auth.service';
-import { UsersService } from 'src/users/users.service';
-import { Serialize } from 'src/interceptors/Serialize.interceptor';
-import { UserDto } from 'src/users/dtos/user.dto';
+import { UsersService } from '../users/users.service';
+import { Serialize } from '../interceptors/Serialize.interceptor';
+import { UserDto } from '../users/dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from '../users/user.entity'
