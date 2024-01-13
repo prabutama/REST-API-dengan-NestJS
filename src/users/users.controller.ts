@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Get, Param, Patch, Query, Delete, UseGuards} from '@nestjs/common';
+import {Body, Controller, Post, Get, Param, Patch, Query, Delete, UseGuards, Injectable} from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUSerDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -40,7 +40,7 @@ export class UsersController {
 
     @Get('/auth/currentuser') 
     @UseGuards(AuthGuard)
-    currentUser(@CurrentUser() user: User) {
+    async currentUser(@CurrentUser() user: User) {
         return user;
     }
 }

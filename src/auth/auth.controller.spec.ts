@@ -2,11 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let fakeAuthService: Partial<AuthService>
+  let fakeUsersService: Partial<UsersService>;
+  let fakeAuthService: Partial<AuthService>;
   beforeEach(async () => {
+    fakeUsersService = {}
     fakeAuthService = {
       login: (email: string, password: string) => {
         return Promise.resolve({ id: 1, email, password } as User);
@@ -20,7 +23,11 @@ describe('AuthController', () => {
         {
           provide: AuthService,
           useValue: fakeAuthService,
-        }
+        }, 
+        {
+          provide: UsersService,
+          useValue: fakeUsersService
+        },
       ],
       controllers: [AuthController],
     }).compile();
@@ -32,7 +39,7 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should a return user logiin', async () => {
+  it('should a return user login', async () => {
   const session = { userId: 20 };
   const user = await controller.login({ email: 'jhon@gmail.com', password: 'jhon' }, session);
   expect(user).toEqual({ id: 1, email: 'jhon@gmail.com', password: 'jhon' });
